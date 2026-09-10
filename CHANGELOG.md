@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3 - Nextcloud provider
+
+- Added a Nextcloud provider for `jamesos doctor` and `jamesos inventory`.
+- Added checks for the Nextcloud app, cron, database, and Redis containers.
+- Added `occ status --output=json` inspection for installed state, maintenance mode, and database upgrade state.
+- Added local Nextcloud endpoint verification.
+- Added Nextcloud service documentation.
+
 ## 0.2.2 - WordPress HTTPS proxy normalization
 
 - Normalized WordPress provider checks for the HTTPS reverse-proxy context used by Cloudflare Tunnel.
