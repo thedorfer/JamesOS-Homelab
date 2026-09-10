@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 - Open WebUI provider
+
+- Added an Open WebUI provider for `jamesos doctor` and `jamesos inventory`.
+- Added checks for the Open WebUI Docker container, health status, and local endpoint.
+- Added Open WebUI service documentation.
+
 ## 0.2.4 - CLI module entry point
 
 - Added a `__main__` guard so `python -m jamesos.interfaces.cli.main <command>` executes the CLI correctly.
