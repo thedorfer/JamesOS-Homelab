@@ -7,7 +7,7 @@ Date: 2026-09-10
 
 ## Context
 
-JamesOS-Homelab began as infrastructure documentation and shell scripts for a self-hosted homelab.
+JamesOS-Homelab began as infrastructure documentation and operational scripts for a self-hosted homelab.
 
 That approach would not scale well. A growing collection of scripts would make it harder to share logic between the command line, dashboards, future APIs, and AI assistants.
 
@@ -17,15 +17,38 @@ JamesOS may eventually grow beyond a normal homelab into a curated operating env
 
 JamesOS-Homelab will be implemented around **JamesOS Core**, a Python application layer.
 
-The repository will provide:
+The repository provides:
 
-- a Python package named `jamesos`
-- a command line interface named `jamesos`
-- provider modules for Linux, Docker, Cloudflare, WordPress, Nextcloud, backups, storage, and future services
-- shared data models for health, inventory, backup, and recovery results
-- future interfaces such as a REST API, Homepage integration, and AI tool bindings
+- a Python package named `jamesos-homelab`
+- a Python import package named `jamesos`
+- a console command named `jamesos` inside the project virtual environment
+- a desktop wrapper command named `jamesos-homelab` to avoid conflicts with the separate `thedorfer/JamesOS` application project
+- provider modules for platform and service integrations
+- shared data models for health and inventory results
+- future extension points for a dashboard, REST API, AI tool bindings, and scheduled reports
 
 Shell scripts may exist as thin wrappers only. Business logic belongs in Python.
+
+## Current Provider Baseline
+
+As of version 0.2.9, JamesOS Core includes providers for:
+
+- Linux host
+- Storage
+- Raspberry Pi gateway
+- Docker
+- WordPress
+- Nextcloud
+- Open WebUI
+- Backups
+
+The expected healthy command is:
+
+```bash
+jamesos-homelab doctor
+```
+
+with an expected `Overall: OK` result.
 
 ## Consequences
 
@@ -34,7 +57,7 @@ The CLI becomes the first interface, not the platform itself.
 Future interfaces can reuse the same core logic:
 
 - CLI
-- Homepage dashboard
+- private dashboard
 - REST API
 - AI assistant tools
 - scheduled health reports
