@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.8 - Storage provider
+
+- Added a Storage provider for `jamesos doctor` and `jamesos inventory`.
+- Added checks for configured storage paths, accessibility, and usage thresholds.
+- Documented the Storage service and future SMART monitoring work.
+- Documented the backup ACL required for JamesOS backup health checks.
+
 ## 0.2.7 - Backup permission handling
 
 - Updated the Backups provider so permission-denied backup directories produce a warning instead of crashing the CLI.
