@@ -7,6 +7,7 @@ from pathlib import Path
 from jamesos.core.config import JamesOSConfig
 from jamesos.core.models import DoctorReport, InventoryReport
 from jamesos.core.registry import Registry
+from jamesos.providers.backups import BackupsProvider
 from jamesos.providers.docker import DockerProvider
 from jamesos.providers.linux import LinuxProvider
 from jamesos.providers.nextcloud import NextcloudProvider
@@ -33,6 +34,7 @@ class JamesOS:
         self.registry.register_provider(WordPressProvider())
         self.registry.register_provider(NextcloudProvider())
         self.registry.register_provider(OpenWebUIProvider())
+        self.registry.register_provider(BackupsProvider())
 
     def doctor(self) -> DoctorReport:
         report = DoctorReport()
