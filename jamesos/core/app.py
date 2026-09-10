@@ -9,6 +9,7 @@ from jamesos.core.models import DoctorReport, InventoryReport
 from jamesos.core.registry import Registry
 from jamesos.providers.docker import DockerProvider
 from jamesos.providers.linux import LinuxProvider
+from jamesos.providers.wordpress import WordPressProvider
 
 
 class JamesOS:
@@ -27,6 +28,7 @@ class JamesOS:
     def _register_builtin_providers(self) -> None:
         self.registry.register_provider(LinuxProvider())
         self.registry.register_provider(DockerProvider())
+        self.registry.register_provider(WordPressProvider())
 
     def doctor(self) -> DoctorReport:
         report = DoctorReport()
