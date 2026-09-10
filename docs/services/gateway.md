@@ -9,27 +9,31 @@ The gateway should remain small, reliable, and easy to rebuild.
 It currently provides:
 
 - Cloudflare Tunnel endpoint
-- JamesOS home dashboard service
+- `james-home` dashboard service
+- SSH-based gateway inspection for JamesOS health checks
 - future reverse-proxy/control-plane responsibilities
 
 The desktop remains the primary application and storage server.
 
-## Default Host
+## Current Default Host
+
+Current desktop default:
 
 ```text
-pi-gateway
+pi-gateway.local
 ```
 
-Override for testing:
+Recommended environment variables:
 
 ```bash
-JAMESOS_GATEWAY_HOST=192.168.4.XX jamesos doctor
+export JAMESOS_GATEWAY_HOST=pi-gateway.local
+export JAMESOS_GATEWAY_USER=james
 ```
 
-Override the SSH user:
+Override for one command:
 
 ```bash
-JAMESOS_GATEWAY_USER=james jamesos doctor
+JAMESOS_GATEWAY_HOST=pi-gateway.local JAMESOS_GATEWAY_USER=james jamesos-homelab doctor
 ```
 
 ## Health Checks
@@ -39,8 +43,7 @@ The JamesOS Gateway provider checks:
 - SSH reachability from the desktop
 - remote hostname
 - remote uptime
-- `cloudflared` systemd service state
-- `james-home` systemd service state
+- configured systemd service states
 - failed systemd units on the gateway
 
 ## Configured Services
@@ -54,7 +57,13 @@ cloudflared,james-home
 Override with:
 
 ```bash
-JAMESOS_GATEWAY_SERVICES=cloudflared,james-home,other-service jamesos doctor
+JAMESOS_GATEWAY_SERVICES=cloudflared,james-home,other-service jamesos-homelab doctor
+```
+
+## Expected Healthy Output
+
+```text
+✓ Pi gateway: Gateway SSH, Cloudflare Tunnel, and dashboard checks passed.
 ```
 
 ## Design Rule
@@ -65,10 +74,16 @@ If the Raspberry Pi fails, the recovery path should be:
 
 1. flash a new Pi image
 2. install required packages
-3. restore tunnel/service configuration
-4. resume gateway duties
+3. restore tunnel/service configuration from secure sources outside Git
+4. restore or redeploy gateway services
+5. run `jamesos-homelab doctor`
+6. confirm gateway checks are green
 
 Persistent application data should stay on the desktop server.
+
+## Public Documentation Note
+
+This repository is public. Do not commit Cloudflare tunnel credentials, private keys, or raw service configuration that contains tokens.
 
 ## Future Work
 
