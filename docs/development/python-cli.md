@@ -1,8 +1,8 @@
 # Python CLI Development
 
-JamesOS-Homelab now uses a Python application core with a CLI as the first interface.
+JamesOS-Homelab uses a Python application core with a CLI as the first interface.
 
-## Install locally
+## Install Locally
 
 From the repository root:
 
@@ -13,7 +13,7 @@ python -m pip install --upgrade pip
 python -m pip install -e .[dev]
 ```
 
-## Run
+## Run Inside the Virtual Environment
 
 ```bash
 jamesos version
@@ -21,10 +21,34 @@ jamesos doctor
 jamesos inventory
 ```
 
-You can also run it without installing the console script:
+## Run from the Desktop Host
+
+The desktop host also has a separate `jamesos` command from the `thedorfer/JamesOS` application project. To avoid command-name collisions, the homelab wrapper command is:
+
+```bash
+jamesos-homelab version
+jamesos-homelab doctor
+jamesos-homelab inventory
+```
+
+The wrapper activates the Homelab virtual environment and runs the correct CLI.
+
+## Current Gateway Defaults
+
+Recommended shell defaults on the desktop:
+
+```bash
+export JAMESOS_GATEWAY_HOST=pi-gateway.local
+export JAMESOS_GATEWAY_USER=james
+```
+
+## Module Entry Point
+
+You can also run the CLI without using the console script:
 
 ```bash
 python -m jamesos version
+python -m jamesos.interfaces.cli.main doctor
 ```
 
 ## Test
@@ -33,8 +57,19 @@ python -m jamesos version
 pytest
 ```
 
-## Architecture rule
+## Architecture Rule
 
 Business logic belongs in Python.
 
-Shell commands are allowed only behind provider boundaries such as `jamesos.providers.linux` and `jamesos.providers.docker`.
+Shell commands are allowed only behind provider boundaries such as:
+
+- `jamesos.providers.linux`
+- `jamesos.providers.storage`
+- `jamesos.providers.gateway`
+- `jamesos.providers.docker`
+- `jamesos.providers.wordpress`
+- `jamesos.providers.nextcloud`
+- `jamesos.providers.open_webui`
+- `jamesos.providers.backups`
+
+Interfaces should format results. Providers should perform integration work. Core should coordinate providers and return structured models.
