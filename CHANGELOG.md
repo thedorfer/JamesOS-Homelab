@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.4 - CLI module entry point
+
+- Added a `__main__` guard so `python -m jamesos.interfaces.cli.main <command>` executes the CLI correctly.
+- Bumped package metadata and tests to `0.2.4`.
+
 ## 0.2.3 - Nextcloud provider
 
 - Added a Nextcloud provider for `jamesos doctor` and `jamesos inventory`.
