@@ -9,6 +9,7 @@ from jamesos.core.models import DoctorReport, InventoryReport
 from jamesos.core.registry import Registry
 from jamesos.providers.backups import BackupsProvider
 from jamesos.providers.docker import DockerProvider
+from jamesos.providers.gateway import GatewayProvider
 from jamesos.providers.linux import LinuxProvider
 from jamesos.providers.nextcloud import NextcloudProvider
 from jamesos.providers.open_webui import OpenWebUIProvider
@@ -32,6 +33,7 @@ class JamesOS:
     def _register_builtin_providers(self) -> None:
         self.registry.register_provider(LinuxProvider())
         self.registry.register_provider(StorageProvider())
+        self.registry.register_provider(GatewayProvider())
         self.registry.register_provider(DockerProvider())
         self.registry.register_provider(WordPressProvider())
         self.registry.register_provider(NextcloudProvider())
