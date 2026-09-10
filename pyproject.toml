@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jamesos-homelab"
+version = "0.2.0"
+description = "JamesOS Core and homelab operations platform."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "James Allendoerfer" }
+]
+keywords = ["homelab", "automation", "docker", "cloudflare", "self-hosted", "jamesos"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: System :: Systems Administration",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+jamesos = "jamesos.interfaces.cli.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.hatch.build.targets.wheel]
+packages = ["jamesos"]
