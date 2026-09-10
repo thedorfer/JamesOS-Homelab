@@ -12,6 +12,7 @@ def test_core_registers_builtin_providers():
     assert "linux" in app.registry.provider_names()
     assert "docker" in app.registry.provider_names()
     assert "wordpress" in app.registry.provider_names()
+    assert "nextcloud" in app.registry.provider_names()
 
 
 def test_doctor_report_status_rollup():
