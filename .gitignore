@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.venv/
+venv/
+
+# Local configuration / secrets
+.env
+.env.*
+!.env.example
+*.secret
+secrets/
+
+# Local inventory generated from live machines
+inventory/*.local.md
+inventory/generated/
+
+# Operating system / editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Backups and quarantines
+backup/
+backups/
+quarantine/
+*.sql
+*.sql.gz
+*.dump
+*.tar
+*.tar.gz
+*.img
+*.img.zst
