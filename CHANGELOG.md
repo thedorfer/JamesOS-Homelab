@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.9 - Pi Gateway provider
+
+- Added a Pi Gateway provider for `jamesos doctor` and `jamesos inventory`.
+- Added SSH-based gateway inspection for hostname, uptime, configured systemd services, and failed units.
+- Added default checks for `cloudflared` and `james-home` on the Raspberry Pi gateway.
+- Added gateway service documentation.
+
 ## 0.2.8 - Storage provider
 
 - Added a Storage provider for `jamesos doctor` and `jamesos inventory`.
