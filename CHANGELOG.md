@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.7 - Backup permission handling
+
+- Updated the Backups provider so permission-denied backup directories produce a warning instead of crashing the CLI.
+- Added explicit path accessibility metadata to backup inventory output.
+- Bumped package metadata and tests to `0.2.7`.
+
 ## 0.2.6 - Backups provider
 
 - Added a Backups provider for `jamesos doctor` and `jamesos inventory`.
