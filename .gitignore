@@ -18,12 +18,37 @@ venv/
 .env
 .env.*
 !.env.example
+.envrc
 *.secret
 secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Cloudflare / tunnel secrets
+cert.pem
+credentials.json
+*.cfargotunnel.com.json
+cloudflared/*.json
+cloudflare/**/*.json
+
+# WordPress / application secrets
+wp-config.local.php
+wp-config.backup.php
+*-salts.txt
 
 # Local inventory generated from live machines
 inventory/*.local.md
 inventory/generated/
+
+# Incident response / malware evidence
+quarantine/
+evidence/
+malware/
+*.ioc.private
 
 # Operating system / editors
 .DS_Store
@@ -37,14 +62,15 @@ Thumbs.db
 *.log
 logs/
 
-# Backups and quarantines
+# Backups and database dumps
 backup/
 backups/
-quarantine/
 *.sql
 *.sql.gz
 *.dump
 *.tar
 *.tar.gz
+*.tgz
+*.zip
 *.img
 *.img.zst
