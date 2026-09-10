@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 from jamesos.core.models import CheckResult
 from jamesos.core.shell import run
 
@@ -21,7 +19,7 @@ class DockerProvider:
                 details={"stderr": version.stderr, "stdout": version.stdout},
             )
 
-        ps = run(["docker", "ps", "--format", "{{json .}}"])
+        ps = run(["docker", "ps", "--format", "{{.Names}}"])
         if not ps.ok:
             return CheckResult(
                 name="Docker",
@@ -40,7 +38,14 @@ class DockerProvider:
 
     def inventory(self) -> dict[str, object]:
         version = run(["docker", "version", "--format", "{{.Server.Version}}"])
-        ps = run(["docker", "ps", "--format", "{{json .}}"])
+        ps = run(
+            [
+                "docker",
+                "ps",
+                "--format",
+                "{{.Names}}|{{.Image}}|{{.Status}}|{{.Ports}}",
+            ]
+        )
 
         containers: list[dict[str, object]] = []
         if ps.ok:
@@ -48,12 +53,21 @@ class DockerProvider:
                 line = line.strip()
                 if not line:
                     continue
-                try:
-                    containers.append(json.loads(line))
-                except json.JSONDecodeError:
-                    containers.append({"raw": line})
+                parts = line.split("|", 3)
+                while len(parts) < 4:
+                    parts.append("")
+                name, image, status, ports = parts
+                containers.append(
+                    {
+                        "name": name,
+                        "image": image,
+                        "status": status,
+                        "ports": ports,
+                    }
+                )
 
         return {
             "server_version": version.stdout if version.ok else None,
+            "container_count": len(containers),
             "containers": containers,
         }
