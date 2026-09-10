@@ -50,7 +50,12 @@ class BackupsProvider:
         failures: list[str] = []
         warnings: list[str] = []
 
-        if not inventory["backup_root_exists"]:
+        root_info = inventory["backup_root_info"]
+        if root_info.get("accessible") is False:
+            warnings.append(
+                f"backup root could not be inspected: {root_info.get('error')}"
+            )
+        elif not inventory["backup_root_exists"]:
             failures.append(f"backup root is missing: {self.backup_root}")
 
         for name, values in inventory["backup_sets"].items():
@@ -58,7 +63,11 @@ class BackupsProvider:
             timer = values["timer"]
             service = values["service"]
 
-            if not latest["exists"]:
+            if latest.get("accessible") is False:
+                warnings.append(
+                    f"{name} latest backup could not be inspected: {latest.get('error')}"
+                )
+            elif latest.get("exists") is False:
                 failures.append(f"{name} latest backup is missing")
             elif latest.get("age_hours") is not None and latest["age_hours"] > self.max_age_hours:
                 warnings.append(
@@ -99,9 +108,11 @@ class BackupsProvider:
         )
 
     def inventory(self) -> dict[str, Any]:
+        root_info = self._path_info(self.backup_root)
         return {
             "backup_root": str(self.backup_root),
-            "backup_root_exists": self.backup_root.exists(),
+            "backup_root_exists": root_info.get("exists") is True,
+            "backup_root_info": root_info,
             "max_age_hours": self.max_age_hours,
             "backup_sets": {
                 name: {
@@ -113,18 +124,33 @@ class BackupsProvider:
             },
         }
 
-    def _latest_info(self, path: Path) -> dict[str, Any]:
-        exists = path.exists()
+    def _path_info(self, path: Path) -> dict[str, Any]:
         info: dict[str, Any] = {
             "path": str(path),
-            "exists": exists,
-            "is_symlink": path.is_symlink(),
-            "target": None,
-            "age_hours": None,
-            "modified_at": None,
+            "exists": None,
+            "is_symlink": None,
+            "accessible": True,
+            "error": None,
         }
+        try:
+            info["exists"] = path.exists()
+            info["is_symlink"] = path.is_symlink()
+        except OSError as exc:
+            info["accessible"] = False
+            info["error"] = f"{type(exc).__name__}: {exc}"
+        return info
 
-        if not exists:
+    def _latest_info(self, path: Path) -> dict[str, Any]:
+        info = self._path_info(path)
+        info.update(
+            {
+                "target": None,
+                "age_hours": None,
+                "modified_at": None,
+            }
+        )
+
+        if info.get("accessible") is False or info.get("exists") is not True:
             return info
 
         try:
@@ -140,7 +166,8 @@ class BackupsProvider:
                 }
             )
         except OSError as exc:
-            info["error"] = str(exc)
+            info["accessible"] = False
+            info["error"] = f"{type(exc).__name__}: {exc}"
 
         return info
 
