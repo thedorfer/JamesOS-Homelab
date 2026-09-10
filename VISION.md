@@ -1,33 +1,59 @@
 # JamesOS Vision
 
-JamesOS is my personal operating system.
+JamesOS is a personal operating environment for infrastructure, automation, AI, documentation, monitoring, and private cloud services.
 
-Not an application.
+The repository is named **JamesOS-Homelab** because it documents and implements the homelab infrastructure. The running platform is simply **JamesOS**.
 
-Not a server.
+## What JamesOS Is
 
-A platform.
+JamesOS is not just a server and it is not just a CLI.
 
-JamesOS combines:
+It is a platform made of:
 
-- Infrastructure
-- Automation
-- AI
-- Documentation
-- Monitoring
-- Personal Cloud
-- Software Development
+- Linux host infrastructure
+- Docker services
+- Cloudflare edge access
+- Raspberry Pi gateway services
+- personal cloud storage
+- public portfolio hosting
+- local AI tooling
+- backups and recovery
+- health checks and automation
+- documentation that explains why the system works the way it does
 
-The goal is simple.
+## Current Direction
 
-If every piece of hardware disappeared tomorrow,
-I should be able to rebuild everything from Git.
+The first interface is a Python CLI:
 
-Infrastructure should be reproducible.
+```bash
+jamesos-homelab doctor
+```
 
-Security should be documented.
+That command now checks the real environment: Linux, storage, Pi gateway, Docker, WordPress, Nextcloud, Open WebUI, and backups.
 
-Recovery should be tested.
+Future interfaces should call the same JamesOS Core logic instead of reimplementing operational checks.
 
-Automation should replace manual work whenever possible.
+Potential future interfaces:
 
+- private dashboard
+- REST API
+- daily health reports
+- AI assistant tools
+- mobile or TV interfaces
+
+## Long-Term Goal
+
+If every piece of hardware disappeared tomorrow, the platform should be recoverable from Git, backups, and documented operational procedures.
+
+The desired end state is not a perfect homelab. The desired end state is a reproducible personal infrastructure platform that is understandable, testable, secure, and recoverable.
+
+## Guiding Rules
+
+- Git is the source of truth.
+- Rebuild over repair.
+- Automate repeated work.
+- Keep secrets out of the repository.
+- Prefer Python business logic over shell-script sprawl.
+- Treat incidents as documentation and automation opportunities.
+- Keep the Raspberry Pi gateway lightweight.
+- Keep persistent application data on the desktop storage server.
