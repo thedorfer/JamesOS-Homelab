@@ -2,39 +2,109 @@
 
 JamesOS Homelab is the infrastructure and operations platform for JamesOS.
 
-It is not just a folder of shell scripts.  It is being built as a Python-powered core platform with a CLI first, and future interfaces for dashboards, APIs, and AI automation.
+This repository documents and implements the personal cloud platform that runs the public portfolio site, private cloud services, AI tools, gateway services, backups, and operational health checks.
 
-## Current State
+The project is intentionally moving away from one-off shell scripts and toward a Python-powered core platform. The CLI is the first interface; future interfaces can include a private dashboard, REST API, scheduled health reports, and AI assistant tools.
 
-- Public portfolio site: WordPress
-- Private cloud: Nextcloud
-- Local AI interface: Open WebUI
-- Public edge: Cloudflare DNS, Tunnel, and WAF rules
-- Gateway appliance: Raspberry Pi 5
-- Application server: Linux desktop with Docker and 13 TB storage
+## Current Operational Baseline
 
-## JamesOS Core
+Current version: **0.2.9**
 
-The package name is `jamesos` and the command is `jamesos`.
+Current daily health command:
+
+```bash
+jamesos-homelab doctor
+```
+
+Current provider stack:
+
+- Linux host
+- Storage
+- Raspberry Pi gateway
+- Docker
+- WordPress
+- Nextcloud
+- Open WebUI
+- Backups
+
+Expected healthy baseline:
+
+```text
+✓ Linux host
+✓ Storage
+✓ Pi gateway
+✓ Docker
+✓ WordPress
+✓ Nextcloud
+✓ Open WebUI
+✓ Backups
+
+Overall: OK
+```
+
+## Current Services
+
+| Service | Role | Status |
+| --- | --- | --- |
+| WordPress | Public portfolio website | Hardened and monitored |
+| Nextcloud | Private cloud storage | Monitored |
+| Open WebUI | Local AI interface | Monitored |
+| Cloudflare Tunnel | Public edge / remote access | Monitored through Pi gateway checks |
+| Raspberry Pi Gateway | Lightweight gateway appliance | Monitored |
+| Desktop Server | Primary application and storage server | Monitored |
+| Backups | WordPress, Nextcloud, and Pi gateway backups | Monitored |
+
+## Install for Local Development
+
+From the repository root:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e .[dev]
+```
 
+Inside the virtual environment:
+
+```bash
 jamesos version
 jamesos doctor
 jamesos inventory
+pytest
 ```
 
-The CLI is only the first interface.  The core is designed so future clients can use the same logic:
+On the desktop host, use the wrapper command to avoid conflicts with the separate `thedorfer/JamesOS` application CLI:
 
-- CLI
-- Homepage dashboard
-- REST API
-- AI assistant tools
-- scheduled health reports
+```bash
+jamesos-homelab version
+jamesos-homelab doctor
+jamesos-homelab inventory
+```
+
+## Environment Defaults
+
+Common local overrides:
+
+```bash
+export JAMESOS_GATEWAY_HOST=pi-gateway.local
+export JAMESOS_GATEWAY_USER=james
+```
+
+Other providers also support environment-variable overrides. See the service documents under `docs/services/`.
+
+## Repository Structure
+
+```text
+jamesos/              Python core platform, providers, and CLI
+docs/                 Architecture, security, recovery, service, and decision docs
+cloudflare/           DNS, Tunnel, WAF, and Zero Trust documentation
+docker/               Docker compose stacks and service deployment notes
+scripts/              Transitional scripts and operational utilities
+services/             Service-specific implementation artifacts
+assets/               Diagrams and screenshots
+tests/                Python tests
+```
 
 ## Design Principles
 
@@ -42,34 +112,13 @@ The CLI is only the first interface.  The core is designed so future clients can
 - Security by default
 - Rebuild over repair
 - Documentation first
-- Python business logic over shell script sprawl
+- Python business logic over shell-script sprawl
 - Providers isolate operating-system and service integrations
 - Git is the source of truth
-
-## Repository Structure
-
-```text
-jamesos/              Python core platform and CLI
-docs/                 Architecture, security, recovery, and decisions
-cloudflare/           DNS, Tunnel, WAF, and Zero Trust documentation
-docker/               Docker compose stacks and service deployment notes
-scripts/              Transitional scripts and operational utilities
-services/             Service-specific runbooks
-inventory/            Generated/local infrastructure inventory
-assets/               Diagrams and screenshots
-tests/                Python tests
-```
-
-## Current Commands
-
-```bash
-jamesos version
-jamesos doctor
-jamesos inventory
-```
+- No secrets in Git
 
 ## Relationship to JamesOS
 
 `thedorfer/JamesOS` is the application and AI platform.
 
-`thedorfer/JamesOS-Homelab` is the infrastructure, operations, and eventual operating environment that runs it.
+`thedorfer/JamesOS-Homelab` is the infrastructure, operations, and future operating environment that runs and protects it.
