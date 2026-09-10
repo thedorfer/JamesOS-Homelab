@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.6 - Backups provider
+
+- Added a Backups provider for `jamesos doctor` and `jamesos inventory`.
+- Added backup-root, latest-backup, backup-age, systemd timer, and systemd service result checks.
+- Added backup service documentation.
+
 ## 0.2.5 - Open WebUI provider
 
 - Added an Open WebUI provider for `jamesos doctor` and `jamesos inventory`.
