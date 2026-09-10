@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import os
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any
 
@@ -75,10 +76,28 @@ class WordPressProvider:
 
         home = str(state.get("home", ""))
         siteurl = str(state.get("siteurl", ""))
+        option_home = str(state.get("option_home", ""))
+        option_siteurl = str(state.get("option_siteurl", ""))
+        wp_home = str(state.get("wp_home", ""))
+        wp_siteurl = str(state.get("wp_siteurl", ""))
+
         if home and not home.startswith("https://"):
             warnings.append("WordPress home URL is not HTTPS")
         if siteurl and not siteurl.startswith("https://"):
             warnings.append("WordPress site URL is not HTTPS")
+        if option_home and not option_home.startswith("https://"):
+            warnings.append("WordPress home option is not HTTPS")
+        if option_siteurl and not option_siteurl.startswith("https://"):
+            warnings.append("WordPress siteurl option is not HTTPS")
+        if wp_home and wp_home != "None" and not wp_home.startswith("https://"):
+            warnings.append("WordPress WP_HOME constant is not HTTPS")
+        if wp_siteurl and wp_siteurl != "None" and not wp_siteurl.startswith("https://"):
+            warnings.append("WordPress WP_SITEURL constant is not HTTPS")
+
+        if state.get("disallow_file_edit") is not True:
+            warnings.append("DISALLOW_FILE_EDIT is not enabled")
+        if state.get("disallow_file_mods") is not True:
+            warnings.append("DISALLOW_FILE_MODS is not enabled")
 
         if urls.get("home") != 200:
             warnings.append("public homepage did not return HTTP 200")
@@ -121,12 +140,25 @@ class WordPressProvider:
         }
 
     def _state(self) -> dict[str, object]:
-        code = r'''
+        parsed = urllib.parse.urlparse(self.public_url)
+        host = parsed.netloc or "jamesallendoerfer.com"
+
+        code = f'''
+$_SERVER["HTTPS"] = "on";
+$_SERVER["HTTP_X_FORWARDED_PROTO"] = "https";
+$_SERVER["HTTP_HOST"] = "{host}";
+$_SERVER["SERVER_PORT"] = "443";
 require "/var/www/html/wp-load.php";
 $out = array(
     "version" => get_bloginfo("version"),
     "home" => home_url("/"),
     "siteurl" => site_url("/"),
+    "option_home" => get_option("home"),
+    "option_siteurl" => get_option("siteurl"),
+    "wp_home" => defined("WP_HOME") ? WP_HOME : null,
+    "wp_siteurl" => defined("WP_SITEURL") ? WP_SITEURL : null,
+    "disallow_file_edit" => defined("DISALLOW_FILE_EDIT") ? DISALLOW_FILE_EDIT : false,
+    "disallow_file_mods" => defined("DISALLOW_FILE_MODS") ? DISALLOW_FILE_MODS : false,
     "blog_public" => get_option("blog_public"),
     "theme" => wp_get_theme()->get("Name"),
     "active_plugins" => get_option("active_plugins"),
