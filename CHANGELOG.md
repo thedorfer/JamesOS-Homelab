@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 - WordPress HTTPS proxy normalization
+
+- Normalized WordPress provider checks for the HTTPS reverse-proxy context used by Cloudflare Tunnel.
+- Added explicit reporting for WordPress `home`/`siteurl` options, `WP_HOME`/`WP_SITEURL` constants, and filesystem hardening constants.
+- Kept dashboard/CLI warnings focused on actual public-site misconfiguration instead of CLI-only URL scheme behavior.
+
 ## 0.2.1 - WordPress provider
 
 - Added a WordPress provider for `jamesos doctor` and `jamesos inventory`.
