@@ -5,6 +5,10 @@
 - Refreshed README, vision, roadmap, security policy, architecture docs, and service docs to reflect the current 0.2.9 operational baseline.
 - Added current operational status documentation.
 - Added WordPress service documentation.
+- Added public documentation indexes and directory guidance for `docs/`, `cloudflare/`, `docker/`, `scripts/`, `services/`, and `assets/`.
+- Added Cloudflare WAF rule documentation using public-safe rule patterns only.
+- Added a public repository rights notice to `LICENSE`.
+- Hardened `.gitignore` for a public homelab repository.
 - Updated public documentation guidance to avoid secrets, raw incident payloads, and private data.
 - Documented the `jamesos-homelab` wrapper command used on the desktop host to avoid command-name conflicts with the separate JamesOS application project.
 
