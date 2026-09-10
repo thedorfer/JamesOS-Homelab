@@ -4,7 +4,7 @@ from jamesos.interfaces.cli.main import main
 
 
 def test_version_is_defined():
-    assert __version__ == "0.2.6"
+    assert __version__ == "0.2.7"
 
 
 def test_core_registers_builtin_providers():
@@ -36,4 +36,4 @@ def test_cli_version_runs(capsys):
     captured = capsys.readouterr()
     assert result == 0
     assert "JamesOS" in captured.out
-    assert "0.2.6" in captured.out
+    assert "0.2.7" in captured.out
