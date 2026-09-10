@@ -10,6 +10,7 @@ from jamesos.core.registry import Registry
 from jamesos.providers.docker import DockerProvider
 from jamesos.providers.linux import LinuxProvider
 from jamesos.providers.nextcloud import NextcloudProvider
+from jamesos.providers.open_webui import OpenWebUIProvider
 from jamesos.providers.wordpress import WordPressProvider
 
 
@@ -31,6 +32,7 @@ class JamesOS:
         self.registry.register_provider(DockerProvider())
         self.registry.register_provider(WordPressProvider())
         self.registry.register_provider(NextcloudProvider())
+        self.registry.register_provider(OpenWebUIProvider())
 
     def doctor(self) -> DoctorReport:
         report = DoctorReport()
