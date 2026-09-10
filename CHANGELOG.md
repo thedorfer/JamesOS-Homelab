@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased - Public documentation refresh
+
+- Refreshed README, vision, roadmap, security policy, architecture docs, and service docs to reflect the current 0.2.9 operational baseline.
+- Added current operational status documentation.
+- Added WordPress service documentation.
+- Updated public documentation guidance to avoid secrets, raw incident payloads, and private data.
+- Documented the `jamesos-homelab` wrapper command used on the desktop host to avoid command-name conflicts with the separate JamesOS application project.
+
 ## 0.2.9 - Pi Gateway provider
 
 - Added a Pi Gateway provider for `jamesos doctor` and `jamesos inventory`.
